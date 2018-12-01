@@ -9,9 +9,12 @@ describe('Controllers: Products', () => {
         price: 100
     }];
 
+    const defaultRequest = {
+        params: {}
+    };
+
     describe('get() products', () => {
         it('should call send with a list of products', () => {
-            const request = {};
             const response = {
                 send: sinon.spy()
             };
@@ -20,7 +23,7 @@ describe('Controllers: Products', () => {
             Product.find.withArgs({}).resolves(defaultProduct);
 
             const productsController = new ProductsController(Product);
-            return productsController.get(request, response)
+            return productsController.get(defaultRequest, response)
                 .then(() => {
                     sinon.assert.calledWith(response.send, defaultProduct);
                 });
@@ -42,6 +45,30 @@ describe('Controllers: Products', () => {
             return productsController.get(request, response)
                 .then(() => {
                     sinon.assert.calledWith(response.send, 'Error');
+                });
+        });
+    });
+
+    describe('getById()', () => {
+        it('should call send with one product', () => {
+            const fakeId = 'a-fake-id';
+            const request = {
+                params: {
+                    id: fakeId
+                }
+            };
+            const response = {
+                send: sinon.spy()
+            };
+
+            Product.find = sinon.stub();
+            Product.find.withArgs({ _id: fakeId }).resolves(defaultProduct);
+
+            const productsController = new ProductsController(Product);
+
+            return productsController.getById(request, response)
+                .then(() => {
+                    sinon.assert.calledWith(response.send, defaultProduct);
                 });
         });
     });
