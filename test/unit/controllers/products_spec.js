@@ -73,4 +73,51 @@ describe('Controllers: Products', () => {
         });
     });
 
+    describe('create() product', () => {
+        it('should call send with a new product', () => {
+            const requestWithBody = Object.assign({}, { body: defaultProduct[0] }, defaultRequest);
+            const response = {
+                send: sinon.spy(),
+                status: sinon.stub()
+            };
+
+            class fakeProduct {
+                save() {}
+            }
+
+            response.status.withArgs(201).returns(response);
+            sinon.stub(fakeProduct.prototype, 'save').withArgs().resolves();
+
+            const productsController = new ProductsController(fakeProduct);
+
+            return productsController.create(requestWithBody, response)
+                .then(() => {
+                    sinon.assert.calledWith(response.send);
+                });
+        });
+
+        context('when an error occurs', () => {
+            it('should return 422', () => {
+                const response = {
+                    send: sinon.spy(),
+                    status: sinon.stub()
+                };
+
+                class fakeProduct {
+                    save() {}
+                }
+
+                response.status.withArgs(422).returns(response);
+                sinon.stub(fakeProduct.prototype, 'save').withArgs().rejects({ message: 'Error' });
+
+                const productsController = new ProductsController(fakeProduct);
+
+                return productsController.create(defaultRequest, response)
+                    .then(() => {
+                        sinon.assert.calledWith(response.status, 422);
+                    });
+            });
+        });
+    });
+
 });
