@@ -1,2 +1,2 @@
 # node-api
-API REST com Node.js
+API REST com Node.js e Mongoose
