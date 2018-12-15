@@ -1,7 +1,7 @@
 {
   "name": "node-api",
   "version": "1.0.0",
-  "description": "API em Node.js",
+  "description": "API em Node.js e Mongoose",
   "main": "server.js",
   "scripts": {
     "start": "babel-node ./server.js",
