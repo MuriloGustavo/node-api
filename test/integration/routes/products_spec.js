@@ -28,7 +28,7 @@ describe('Routes: Products', () => {
 
     beforeEach(() => {
         const product = new Product(defaultProduct);
-        product._id = '56cb91bdc3464f14678934ca';
+        product._id = defaultId;
         return Product.remove({})
           .then(() => product.save());
     });
