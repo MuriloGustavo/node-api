@@ -14,7 +14,7 @@ class ProductsController {
         const { params: { id } } = req;
 
         return this.Product.find({ _id:id })
-            .then(products => res.send(products))
+            .then(product => res.send(product))
             .catch(err => res.status(400).send(err.message));
     }
 
